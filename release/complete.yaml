@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-ping-pong-ping
+  name: release01-ping-pong-ping
   namespace: default
 spec:
   selector:
-    app: RELEASE-NAME-ping-pong-ping
+    app: release01-ping-pong-ping
   type: NodePort
   ports:
     - protocol: TCP
@@ -18,11 +18,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-ping-pong-pong
+  name: release01-ping-pong-pong
   namespace: default
 spec:
   selector:
-    app: RELEASE-NAME-ping-pong-pong
+    app: release01-ping-pong-pong
   type: LoadBalancer
   ports:
     - protocol: TCP
@@ -33,27 +33,27 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  RELEASE-NAME-ping-pong-ping
+  name:  release01-ping-pong-ping
   namespace: default
   labels:
-    app: RELEASE-NAME-ping-pong-ping
+    app: release01-ping-pong-ping
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: RELEASE-NAME-ping-pong-ping
-      release: RELEASE-NAME
+      app: release01-ping-pong-ping
+      release: release01
 
   template:
     metadata:
       labels:
-        app: RELEASE-NAME-ping-pong-ping
-        release: RELEASE-NAME
+        app: release01-ping-pong-ping
+        release: release01
         network-service-id: test
         type: ping
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{"name": "RELEASE-NAME-ping-pong",
+        k8s.v1.cni.cncf.io/networks: '[{"name": "release01-ping-pong",
                                         "namespace": "default"}]'
         prometheus.io/scrape: "true"
         prometheus.io/path: /api/v1/ping/metrics
@@ -74,7 +74,7 @@ spec:
                 - pong
             topologyKey: kubernetes.io/hostname
       containers:
-      - name: RELEASE-NAME-ping-pong
+      - name: release01-ping-pong
         image: artifactory.riftio.com/docker/rw.ping:2004
         imagePullPolicy: IfNotPresent
 ---
@@ -82,34 +82,34 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  RELEASE-NAME-ping-pong-pong
+  name:  release01-ping-pong-pong
   namespace: default
   labels:
-    app: RELEASE-NAME-ping-pong-pong
+    app: release01-ping-pong-pong
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: RELEASE-NAME-ping-pong-pong
-      release: RELEASE-NAME
+      app: release01-ping-pong-pong
+      release: release01
 
   template:
     metadata:
       labels:
-        app: RELEASE-NAME-ping-pong-pong
-        release: RELEASE-NAME
+        app: release01-ping-pong-pong
+        release: release01
         network-service-id: test
         type: pong
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{"name": "RELEASE-NAME-ping-pong",
+        k8s.v1.cni.cncf.io/networks: '[{"name": "release01-ping-pong",
                                         "namespace": "default"}]'
         prometheus.io/scrape: "true"
         prometheus.io/path: /api/v1/pong/metrics
         prometheus.io/port: "18889"
     spec:
       containers:
-      - name: RELEASE-NAME-ping-pong
+      - name: release01-ping-pong
         image: artifactory.riftio.com/docker/rw.pong:2005
         imagePullPolicy: IfNotPresent
 ---
@@ -117,7 +117,7 @@ spec:
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: RELEASE-NAME-ping-pong
+  name: release01-ping-pong
   namespace: default
 spec:
   config: '{
