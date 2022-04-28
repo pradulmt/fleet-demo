@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: de-som-ping-y9eh6n4aj-0-0-0-hr
+  namespace: default
+spec:
+  chart:
+    spec:
+      chart: ./de-som-ping-y9eh6n4aj-0-0-0
+      sourceRef:
+        kind: GitRepository
+        name: de-som-ping-y9eh6n4aj-0-0-0-source
+  interval: 5m0s
+  releaseName: de-som-ping-y9eh6n4aj-0-0-0
+  values:
+    global:
+      namespace: default
+      nsId: 9ba5efa7-5f86-4628-84d9-0d4aee36b6cf
+    internalVldInterface: net1
+    ping:
+      image:
+        imagePullSecrets: []
+        pullPolicy: IfNotPresent
+        repository: artifactory.riftio.com/docker/rw.ping
+        tag: "2004"
+      metrics:
+        annotations:
+          path: /api/v1/ping/metrics
+          port: 18888
+          scrape: true
+        enabled: true
+      replicaCount: 1
+      serviceType: NodePort
+    pong:
+      image:
+        imagePullSecrets: []
+        pullPolicy: IfNotPresent
+        repository: artifactory.riftio.com/docker/rw.pong
+        tag: "2005"
+      metrics:
+        annotations:
+          path: /api/v1/pong/metrics
+          port: 18889
+          scrape: true
+        enabled: true
+      replicaCount: 1
+      serviceType: LoadBalancer
+
